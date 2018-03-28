@@ -32,10 +32,10 @@ def main
   end
 
   client = Twitter::REST::Client.new do |config|
-    config.consumer_key        = "6zBwFAuN7YhL6IKHRJ6NydHpN"
-    config.consumer_secret     = "qkaxlFuhvogTaZpbgFAvvgUeTUvA1oS7WIS0OQ5vKqRmE57Wmq"
-    config.access_token        = "977933425075216384-z4Za0dQ807EdIkBcm8RH2BxSTnr6DXJ"
-    config.access_token_secret = "qrEyq6fEU26o4Md621nI6opPkTjqs8RwGxqP6nhOvwr5U"
+    config.consumer_key        = "your_key_here"
+    config.consumer_secret     = "your_key_here"
+    config.access_token        = "your_key_here"
+    config.access_token_secret = "your_key_here"
   end
 
   markov = MarkyMarkov::Dictionary.new('Dictionary', 1)
