@@ -10,5 +10,5 @@ A bot utilizing markov chain generation to generate tweets based on another acco
 
 3. run `ruby colebot.rb sendTweet username` every time you want to update the dictionary and send a tweet.
 
-4. BONUS STEP.  Schedule bot tweets using crontab.  Install crontab and type `crontab -e` and add the line `*/6 \* \* \* ruby ~/bots/colebot/colebot.rb sendTweet username'.  This will post a tweet every 6 hours. Type `man crontab` to learn more about how the scheduling works.
+4. BONUS STEP.  Schedule bot tweets using crontab.  Install crontab and type `crontab -e` and add the line `*/6 * * * ruby ~/bots/colebot/colebot.rb sendTweet username'`.  This will post a tweet every 6 hours. Type `man crontab` to learn more about how the scheduling works.
 
