@@ -50,7 +50,9 @@ def get_recent_tweets(user, markov, newest_id)
   return markov
 end
 
-# This method puts a tweet into a markov chain and removes t.co links and @s
+# This method puts a tweet into a markov chain and removes all links and @s
+# Removing links might be undesired in some cases, but marky_markov's implmentation
+# makes them difficult to handle because they contain periods.
 def parse_tweet(markov, tweet)
   tweet = tweet.full_text
   tweet.unfreeze
@@ -60,7 +62,7 @@ def parse_tweet(markov, tweet)
   return markov
 end
 
-# This method sends a tweet
+# This method gets a tweet from the dictionary of depth 1 and sends it
 def send_tweet(client, markov)
   client.update(markov.generate_n_sentences 1)
 end

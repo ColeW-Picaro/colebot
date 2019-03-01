@@ -8,7 +8,15 @@
 require_relative "colebot"
 
 def main
-  # OAuth authentication
+  # OAuth authentication from a file named oauth.txt
+=begin
+  oauth.txt looks like this:
+  line 1: consumer key
+  line 2: consumer secret
+  line 3: access token
+  line 4: access secret
+  nothing beyond these lines matters
+=end
   client = Twitter::REST::Client.new do |config|
     keys = []
     File.foreach ("oauth.txt") do |line|
@@ -25,6 +33,8 @@ def main
   
   # Process command line arguments, resetDictionary to make a dictionary
   # sendTweet to actually send a tweet
+  # ARGV[0] represents the action, ARGV[1] represnts the account you
+  # want to get tweets from
   if ARGV[0] == "resetDictionary"
     markov = client.get_all_tweets(ARGV[1], markov)
     markov.save_dictionary!
