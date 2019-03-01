@@ -1,3 +1,10 @@
+=begin
+  Filename: Main.rb
+  Author: Cole Vohs
+  Description: A script utilizing colebot.rb to maintain and utilize
+  a markov chain dictionary with an authorized twitter account
+=end
+
 require_relative "colebot"
 
 def main

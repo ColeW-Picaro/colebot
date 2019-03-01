@@ -1,9 +1,16 @@
+=begin
+  Filename: colebot.rb
+  Author: Cole Vohs (some functions taken from twitter gem wiki and stack overflow
+  Description: colebot.rb contains the functions required to host a twitter bot
+=end
+
 require "rubygems"
 require "twitter"
 require "marky_markov"
 require "fiddle"
 
 # unfreeze is the reverse of the freeze method.  It makes objects mutable
+# Taken from https://stackoverflow.com/questions/35633367/how-to-unfreeze-an-object-in-ruby
 class Object
   def unfreeze
     Fiddle::Pointer.new(object_id * 2)[1] &= ~(1 << 3)
@@ -12,7 +19,9 @@ end
 
 # Global function definitions
 public
+
 # returns the max id of a timeline
+# Taken from https://github.com/sferik/twitter/blob/master/examples/AllTweets.md
 def collect_with_max_id(collection=[], max_id=nil, &block)
   response = yield(max_id)
   collection += response
@@ -20,6 +29,7 @@ def collect_with_max_id(collection=[], max_id=nil, &block)
 end
 
 # This method gets all the tweets from a user's timeline and returns a dictionary of them, must only run once
+# Adapted from https://github.com/sferik/twitter/blob/master/examples/AllTweets.md
 def get_all_tweets(user, markov)
   collect_with_max_id do |max_id|
     options = {count: 200, include_rts: false}
