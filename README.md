@@ -4,9 +4,9 @@ A bot utilizing markov chain generation to generate tweets based on another acco
 ### Usage
 0. Install ruby and the required gems, which are listed at the top of the colebot.rb file
 
-1. With a Twitter developer account (smh twitter you're killing your own site), create a new app and generate the tokens and keys.  Replace each key with the corresponding variable in the code and save the file.
+1. With a Twitter developer account (smh twitter you're killing your own site), create a new app and generate the tokens and keys. Create a text file named "oauth.txt" and put your keys in the file in the order of: consumer key, consumer secret, access token, access secret.
 
-2. run `ruby colebot.rb resetDictionary username` where `username` is your Twitter @.  This will create your dictionary in the same directory.
+2. run `ruby colebot.rb resetDictionary username` where `username` is your Twitter @ without the @.  This will create your dictionary in the same directory.
 
 3. run `ruby colebot.rb sendTweet username` every time you want to update the dictionary and send a tweet.
 

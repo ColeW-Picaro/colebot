@@ -39,15 +39,12 @@ def main
     return markov
   end
 
-  # This method puts a tweet into a markov chain and removes a t.co link
+  # This method puts a tweet into a markov chain and removes t.co links and @s
   def parse_tweet(markov, tweet)
     tweet = tweet.full_text
     tweet.unfreeze
-    if tweet.include? "https:"
-      tweet.slice!(/https:\/\/t.co\/\w{10}/)
-    elsif tweet.include? "http:"
-      tweet.slice!(/http:\/\/t.co\/\w{10}/)
-    end
+    tweet.slice!(/(http:|https:)\/\/t.co\/\w{10}/)
+    tweet.slice!(/@\w+/)
     markov.parse_string tweet
     return markov
   end
@@ -64,13 +61,17 @@ def main
     return tweet[0].id
   end
 
- client = Twitter::REST::Client.new do |config|
-    config.consumer_key        = "your-token-here"
-    config.consumer_secret     = "your-token-here"
-    config.access_token        = "your-token-here"
-    config.access_token_secret = "your-token-here"
+  client = Twitter::REST::Client.new do |config|
+    keys = []
+    File.foreach ("oauth.txt") do |line|
+      keys.push (line).gsub("\n", "")
+    end
+    config.consumer_key        = keys[0]
+    config.consumer_secret     = keys[1]
+    config.access_token        = keys[2]
+    config.access_token_secret = keys[3]
   end
-
+  
   #Create/Load dictionary.  Will save dictionary as usernameDictionary.mmd
   markov = MarkyMarkov::Dictionary.new(ARGV[1] + "Dictionary", 1)
 
@@ -87,5 +88,6 @@ def main
   end
 
 end
+
 
 main
