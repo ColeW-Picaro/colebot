@@ -6,6 +6,7 @@
 =end
 
 require_relative "colebot"
+require "optparse"
 
 def main
   # OAuth authentication from a file named oauth.txt
@@ -27,22 +28,59 @@ def main
     config.access_token        = keys[2]
     config.access_token_secret = keys[3]
   end
+
+  # Process command line args
+  # -u USER specifies a user
+  # -d updates the user's dictionary
+  # -r resets the user's dictionary
+  # -t sends a tweet
+  # -h prints help  
+  options = {}
+  OptionParser.new do |opts|
+    opts.banner = "Usage: Main.rb (-ud | -rd) (-t [OPTIONAL]) -u USER"
+
+    opts.on("-d", "--update", "Update dictionary") do
+      options[:update] = true
+    end
+    
+    opts.on("-r", "--reset", "Reset dictionary") do
+      option[:reset] = true
+    end
+
+    opts.on("-t", "--tweet", "Send a tweet") do
+      options[:tweet] = true
+    end
+    
+    opts.on("-uREQUIRED", "--user=REQUIRED USER", "Specify USER (required)") do |u|
+      options[:user] = u
+    end
+    
+    opts.on("-h", "--help", "Display help") do
+      puts opts
+      exit
+    end
+    
+  end.parse!
   
   # Create/Load dictionary.  Will save dictionary as usernameDictionary.mmd
-  markov = MarkyMarkov::Dictionary.new(ARGV[1] + "Dictionary", 1)
+  if options.has_key?(:user)
+    markov = MarkyMarkov::Dictionary.new(options[:user] + "Dictionary", 1)
+  else
+    puts "Error: Must provide user; use -h for help"
+    abort
+  end
   
-  # Process command line arguments, resetDictionary to make a dictionary
-  # sendTweet to actually send a tweet
-  # ARGV[0] represents the action, ARGV[1] represnts the account you
-  # want to get tweets from
-  if ARGV[0] == "resetDictionary"
-    markov = client.get_all_tweets(ARGV[1], markov)
+  if (options[:reset])
+    markov = client.get_all_tweets(options[:user], markov)
     markov.save_dictionary!
-  elsif ARGV[0] == "sendTweet"
-    newest_id = client.get_newest_id(ARGV[1])
-    markov = client.get_recent_tweets(ARGV[1], markov, newest_id)
+  elsif (options[:update])
+    newest_id = client.get_newest_id(options[:user])
+    markov = client.get_recent_tweets(options[:user], markov, newest_id)
     markov.save_dictionary!
-    send_tweet(client, markov)
+  end
+  
+  if (options[:tweet])
+      send_tweet(client, markov)
   end
 end
 

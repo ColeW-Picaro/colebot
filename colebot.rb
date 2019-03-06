@@ -1,6 +1,6 @@
 =begin
   Filename: colebot.rb
-  Author: Cole Vohs (some functions taken from twitter gem wiki and stack overflow
+  Author: Cole Vohs (some functions taken from twitter gem wiki and stack overflow)
   Description: colebot.rb contains the functions required to host a twitter bot
 =end
 
@@ -11,6 +11,7 @@ require "fiddle"
 
 # unfreeze is the reverse of the freeze method.  It makes objects mutable
 # Taken from https://stackoverflow.com/questions/35633367/how-to-unfreeze-an-object-in-ruby
+# Flips the 11th bit in an object, which is is the FL_FREEZE flag in an object. Really janky, but w/e
 class Object
   def unfreeze
     Fiddle::Pointer.new(object_id * 2)[1] &= ~(1 << 3)
