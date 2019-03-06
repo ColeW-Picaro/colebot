@@ -2,7 +2,7 @@
 source "https://rubygems.org"
 
 # Version
-ruby "2.6.0"
+ruby "2.6.1"
 
 # Required Gems
 gem "twitter"
