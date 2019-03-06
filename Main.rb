@@ -44,7 +44,7 @@ def main
     end
     
     opts.on("-r", "--reset", "Reset dictionary") do
-      option[:reset] = true
+      options[:reset] = true
     end
 
     opts.on("-t", "--tweet", "Send a tweet") do
@@ -71,16 +71,18 @@ def main
   end
   
   if (options[:reset])
-    markov = client.get_all_tweets(options[:user], markov)
+    tweets = client.get_all_tweets(options[:user])
+    parse_tweets(markov, tweets)
     markov.save_dictionary!
   elsif (options[:update])
     newest_id = client.get_newest_id(options[:user])
-    markov = client.get_recent_tweets(options[:user], markov, newest_id)
+    tweets = client.get_recent_tweets(options[:user], newest_id)
+    parse_tweets(markov, tweets)
     markov.save_dictionary!
   end
   
   if (options[:tweet])
-      send_tweet(client, markov)
+      send_tweet(client, markov.generate_n_sentences(1))
   end
 end
 
