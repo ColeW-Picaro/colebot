@@ -9,26 +9,6 @@ require_relative "colebot"
 require "optparse"
 
 def main
-  # OAuth authentication from a file named oauth.txt
-=begin
-  oauth.txt looks like this:
-  line 1: consumer key
-  line 2: consumer secret
-  line 3: access token
-  line 4: access secret
-  nothing beyond these lines matters
-=end
-  client = Twitter::REST::Client.new do |config|
-    keys = []
-    File.foreach ("oauth.txt") do |line|
-      keys.push (line).gsub("\n", "")
-    end
-    config.consumer_key        = keys[0]
-    config.consumer_secret     = keys[1]
-    config.access_token        = keys[2]
-    config.access_token_secret = keys[3]
-  end
-
   # Process command line args
   # -u USER specifies a user
   # -d updates the user's dictionary
@@ -56,8 +36,17 @@ def main
       options[:user] = u
     end
 
+<<<<<<< HEAD
     opts.on("-v", "--vape", "send vape flavor") do
       options[:vape] = true
+=======
+    opts.on("-aREQUIRED", "--auth=REQUIRED AUTH", "Specify AUTH file (required") do |a|
+      options[:auth] = a
+    end
+
+    opts.on("-i", "--dict DICT", "Specify dictionary DICT (default is current dirctory)") do |i|
+      options[:dictionary] = i.gsub(".mmd", "")
+>>>>>>> a63c2d0af083d85f01b76e229fc577456314b951
     end
     
     opts.on("-h", "--help", "Display help") do
@@ -66,10 +55,35 @@ def main
     end
     
   end.parse!
+
+  # OAuth authentication from a file named oauth.txt
+=begin
+  oauth.txt looks like this:
+  line 1: consumer key
+  line 2: consumer secret
+  line 3: access token
+  line 4: access secret
+  nothing beyond these lines matters
+=end
+  client = Twitter::REST::Client.new do |config|
+    keys = []
+    File.foreach (options[:auth]) do |line|
+      keys.push (line).gsub("\n", "")
+    end
+    config.consumer_key        = keys[0]
+    config.consumer_secret     = keys[1]
+    config.access_token        = keys[2]
+    config.access_token_secret = keys[3]
+  end
+
   
   # Create/Load dictionary.  Will save dictionary as usernameDictionary.mmd
   if options.has_key?(:user)
-    markov = MarkyMarkov::Dictionary.new(options[:user] + "Dictionary", 1)
+    if options.has_key?(:dictionary)
+      markov = MarkyMarkov::Dictionary.new(options[:dictionary], 1)
+    else
+      markov = MarkyMarkov::Dictionary.new(options[:user] + "Dictionary", 1)
+    end
   else
     puts "Error: Must provide user; use -h for help"
     abort
