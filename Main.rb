@@ -34,6 +34,7 @@ def main
   # -d updates the user's dictionary
   # -r resets the user's dictionary
   # -t sends a tweet
+  # -v tweets a vape flavor
   # -h prints help  
   options = {}
   OptionParser.new do |opts|
@@ -54,6 +55,10 @@ def main
     opts.on("-uREQUIRED", "--user=REQUIRED USER", "Specify USER (required)") do |u|
       options[:user] = u
     end
+
+    opts.on("-v", "--vape", "send vape flavor") do
+      options[:vape] = true
+    end
     
     opts.on("-h", "--help", "Display help") do
       puts opts
@@ -69,7 +74,10 @@ def main
     puts "Error: Must provide user; use -h for help"
     abort
   end
-  
+
+  # If the reset flag is set, reset the dictionary,
+  # If the update flag is set, update the dictionary,
+  # else do nothing
   if (options[:reset])
     tweets = client.get_all_tweets(options[:user])
     parse_tweets(markov, tweets)
@@ -80,7 +88,18 @@ def main
     parse_tweets(markov, tweets)
     markov.save_dictionary!
   end
-  
+
+  # Vape Flavor module
+  # Run the vapeflavor program and use the output file flavor.txt
+  # Module stored in modules/vapeflavor
+  if (options[:vape])
+    `./modules/vapeflavor/Flavor`
+    flavor = IO.readlines("modules/vapeflavor/flavor.txt")
+    tweet = "Vape Flavor: " + flavor[0]
+    send_tweet(client, tweet)
+  end
+
+  # Tweet if the user asked
   if (options[:tweet])
       send_tweet(client, markov.generate_n_sentences(1))
   end

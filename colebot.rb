@@ -53,7 +53,8 @@ def get_recent_tweets(user, newest_id)
   return tweets
 end
 
-# This method puts each tweet into a markov chain and removes all links and @s
+# This method puts each tweet into a markov chain and removes all links and @s.
+# It returns the markov chain
 # Removing links might be undesired in some cases, but marky_markov's implmentation
 # makes them difficult to handle because they contain periods.
 def parse_tweets(markov, tweets)
@@ -67,12 +68,12 @@ def parse_tweets(markov, tweets)
   return markov
 end
 
-# This method gets a tweet from the dictionary of depth 1 and sends it
+# This method sends a tweet
 def send_tweet(client, tweet)
   client.update(tweet)
 end
 
-# This method gets a user's newest tweet
+# This method gets a user's newest tweet's id
 def get_newest_id(user)
   options = {count: 1, include_rts: false}
   tweet = user_timeline(user, options)
