@@ -60,7 +60,7 @@ end
 def parse_tweets(markov, tweets)
   tweets.each do |tweet|
     text = tweet.full_text
-    text.unfreeze
+    #text.unfreeze
     text = text.gsub(/(http:\/\/|https:\/\/|)t?.?co\/\w+/, "")
     text = text.gsub(/@\w+/, "")
     markov.parse_string(text)

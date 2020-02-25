@@ -36,17 +36,17 @@ def main
       options[:user] = u
     end
 
-<<<<<<< HEAD
     opts.on("-v", "--vape", "send vape flavor") do
       options[:vape] = true
-=======
+    end
+    
     opts.on("-aREQUIRED", "--auth=REQUIRED AUTH", "Specify AUTH file (required") do |a|
       options[:auth] = a
     end
 
     opts.on("-i", "--dict DICT", "Specify dictionary DICT (default is current dirctory)") do |i|
       options[:dictionary] = i.gsub(".mmd", "")
->>>>>>> a63c2d0af083d85f01b76e229fc577456314b951
+
     end
     
     opts.on("-h", "--help", "Display help") do
@@ -57,14 +57,13 @@ def main
   end.parse!
 
   # OAuth authentication from a file named oauth.txt
-=begin
-  oauth.txt looks like this:
-  line 1: consumer key
-  line 2: consumer secret
-  line 3: access token
-  line 4: access secret
-  nothing beyond these lines matters
-=end
+  # oauth.txt looks like this:
+  # line 1: consumer key
+  # line 2: consumer secret
+  # line 3: access token
+  # line 4: access secret
+  # nothing beyond these lines matters
+
   client = Twitter::REST::Client.new do |config|
     keys = []
     File.foreach (options[:auth]) do |line|
@@ -115,7 +114,7 @@ def main
 
   # Tweet if the user asked
   if (options[:tweet])
-      send_tweet(client, markov.generate_n_sentences(1))
+    send_tweet(client, markov.generate_n_sentences(1))
   end
 end
 
